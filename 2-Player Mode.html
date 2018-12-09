@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Game</title>
+</head>
+<body>
+	<style type="text/css">
+		
+		html{
+	height: 100%;
+		}
+		body{
+			height: 97%;
+			background-image: linear-gradient(to right bottom, #C9FFE5, lightblue, #7DF9FF, aqua, turquoise, #0D98BA);
+			background-repeat: no-repeat;
+			background-size: cover;
+			margin: auto 0;
+		}
+		.Rules{
+			height: 100%;
+			width: 100%;
+			position: absolute;
+			background: rgba(255, 255, 255, 1);
+		}
+		.header{
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 50px;
+			margin: auto;
+			left: 50%;
+			font-family: "Georgia";
+			color: blue;
+		}
+
+		.firstplayer{
+			position: absolute;
+			top: 150px;
+			font-size: 30px;
+			left: 30%;
+		}
+
+		.secondplayer{
+			position: absolute;
+			top: 400px;
+			font-size: 30px;
+			left: 30%
+		}
+		input[type = button]{
+			height: 65px;
+			width: 60px;
+			font-size: 30px;
+			border-radius: 10px;
+			outline: none;
+			border-color: red blue green yellow;
+			box-shadow: 5px 5px 20px #888888;
+			background: rgba(255, 255, 255, 0.8);
+			left: 50%;
+			transform: translateX(-50%);
+			top: 1px;
+		}
+		#true1{
+			position: relative;
+			left: 160px;
+			color: green;
+		}
+		#false1{
+			position: relative;
+			left: 337px;
+			color: red;
+		}
+		#true2{
+			position: relative;
+			left: 160px;
+			color: green;
+		}
+		#false2{
+			position: relative;
+			left: 337px;
+			color: red;
+		}
+		input[type = button]:active{
+			
+			font-size: 28px;
+		}
+		button[disabled = disabled]{
+			height: 30px;
+			width: 200px;
+			font-size: 15px;
+			color: black;
+		}
+		.word{
+			width: 100%;
+			position: absolute;
+			top: 40%;
+			background: rgba(255, 255, 255, 0.5);
+			height: 55px;
+			text-align: center;
+			padding: 30px 0px 20px 0px;
+			font-size: 40px;
+			color: blue;
+			font-family: "Georgia";
+			box-shadow: 3px 3px 20px black;
+		}
+		input[type = text]{
+			height: 60px;
+			width: 300px;
+			background: rgba(255, 255, 255, 0.1);
+			border-color: red;
+			font-family: "Georgia";
+			color: red;
+			font-size: 50px;
+			text-align: center;
+			border-radius: 10px;
+			box-shadow: 3px 3px 50px black;
+			font-weight: bolder;
+		}
+		#firstScore{
+			position: absolute;
+			left: -350px;
+			top: -50px;
+		}
+		#secondScore{
+			position: absolute;
+			right: -480px;
+			top: 50px;
+		}
+		#name1, #name2{
+			position: absolute;
+			font-family: "Georgia";
+			font-size: 30px;
+			text-align: center;
+		}
+		#holder1, #holder2{
+			font-size: 25px;
+		}
+		#playnow{
+			position: absolute;
+			left: 675px;
+			width: 200px;
+			top: 550px;
+		}
+		#choosename1, #choosename2{
+		position: relative;
+			left: 360px;
+		}
+
+	</style>
+	<p class="header">Does It Fly?</p>
+
+	<div class="firstplayer">
+		<input type="button" id="true1" value="T" accesskey="a" onclick="setTimeout(changeWord, 500);">
+		<input type="button" id="false1" value="F" accesskey="s"  onclick="setTimeout(changeWord, 500);">
+		<input type="text" disabled="disabled" id="firstScore"></input>
+		<input type="text" disabled="disabled" id="holder1">
+		</input>
+	</div>
+
+	<div class="secondplayer">	
+		<input type="button" id="true2" value="T" accesskey="k"  onclick="setTimeout(changeWord, 500);">
+		<input type="button" id="false2" value="F" accesskey="l"  onclick="setTimeout(changeWord, 500);">
+		<input type="text" disabled="disabled" id="secondScore"></input>
+		<input type="text" disabled="disabled" id="holder2">
+		
+	</div>	
+
+	<div class="word">
+		
+	</div>
+
+	<div class="Rules">
+		<h1 align="center" style="color: red;">Does It Fly? Made To You By Me</h1>
+		<h2 align="left">Game Rules:</h2>
+		<ul style="font-size: 30px;">
+			<li>Write the names of the players in the given box below</li>
+			<li>For player 1(upper side) contols are alt "a" and alt "s" for true and false respectively</li>
+			<li>For player 2(lower side) controls are alt "k" and alt "l" for true and false respectively</li>
+			<li>A word will appear in the center and you will click true if the word is something that flies, if it doesn't fly click false, the word will change when anyone clicks on true or false buttons</li>
+			<li>Your score increases with every correct answer and decreases with every wrong answer</li>
+			<li>The person who scores 10 first wins the game</li>
+		</ul>
+
+		<input type="text" id="choosename1" placeholder="Player1" required>
+		<input type="text" id="choosename2" placeholder="Player2" required>
+		<input type="button" id="playnow" value="Play Now"></button>
+
+	</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+	
+	var word = document.querySelector(".word");
+	var isTrue = ["Sparrow", "Helicopter", "Flying paper", "Aeroplane", "Rocket", "Ballon", "Mousquito", "Dragon", "Housefly", "Spaceship", "Eagle", "Time", "Superman"];
+	var isFalse = ["Elephant", "Plastic bottle", "Khalid", "Sondos", "Table", "TV", "Mug", "Zombie", "Mobile", "Car", "Ship", "Tree", "Hen", "Spiderman"];
+	var trueAndFalse = isTrue.concat(isFalse);
+
+	//Shuffle the arrays to get the random word!
+	function shuffleWords(array){
+		
+		var j, x, i;
+    	for (i = array.length - 1; i > 0; i--) {
+    	    j = Math.floor(Math.random() * (i + 1));
+       		x = array[i];
+        	array[i] = array[j];
+        	array[j] = x;
+        	var randomWord= x;
+		}
+		return randomWord;
+	}
+	function changeWord(){
+		word.innerHTML = shuffleWords(trueAndFalse);
+	}
+	changeWord();
+	
+	//Search for the element in the arrays
+	var true1 = document.querySelector("#true1");
+	var false1 = document.querySelector("#false1");
+	var true2 = document.querySelector("#true2");
+	var false2 = document.querySelector("#false2");
+	var score1 = document.querySelector("#firstScore");
+	var score2 = document.querySelector("#secondScore");
+	// Change word and check again for every click.
+	true1.addEventListener("click", checkIfTrue1);
+	true1.addEventListener("click", checkIfFalse1);
+	true1.addEventListener("click", checkScore);
+	true1.addEventListener("click", disableBtns);
+	true1.addEventListener("click", setEnableBtns);
+	false1.addEventListener("click", checkIfTrue2);
+	false1.addEventListener("click", checkIfFalse2);
+	false1.addEventListener("click", checkScore);
+	false1.addEventListener("click", disableBtns);
+	false1.addEventListener("click", setEnableBtns);
+	true2.addEventListener("click", checkIfTrue3);
+	true2.addEventListener("click", checkIfFalse3);
+	true2.addEventListener("click", checkScore);
+	true2.addEventListener("click", disableBtns);
+	true2.addEventListener("click", setEnableBtns);
+	false2.addEventListener("click", checkIfTrue4);
+	false2.addEventListener("click", checkIfFalse4);
+	false2.addEventListener("click", checkScore);
+	false2.addEventListener("click", disableBtns);
+	false2.addEventListener("click", setEnableBtns);
+
+
+true1.addEventListener("keyup", function(event) {
+  event.preventDefault();
+  if (event.which === 97) {
+    document.getElementById("true1").click();
+  }
+});
+
+	var score3 = 0;
+	var score4 = 0;
+	score1.value = "Score: " + 0;
+	score2.value = "Score: " + 0;
+	
+	//increament and decreament
+	function increment1(){
+		score3 = score3 + 1;
+	}
+	function decrement1(){
+		score3 = score3 - 1;
+	}
+	function increment2(){
+		score4 = score4 + 1;
+	}
+	function decrement2(){
+		score4 = score4 - 1;
+	}
+	
+	//buttons and scores baby!
+	function checkIfTrue1(){
+		if (isTrue.indexOf(word.innerHTML) > -1 ) {
+			increment1();
+			score1.value = "Score: " + score3;
+		} 
+	}
+
+	function checkIfFalse1(){
+		if (isTrue.indexOf(word.innerHTML) === -1 ) {
+			decrement1();
+			score1.value = "Score: " + score3;
+		} 
+	}
+
+
+	function checkIfTrue2(){
+		if (isTrue.indexOf(word.innerHTML) === -1 ) {
+			increment1();
+			score1.value = "Score: " + score3;
+		} 
+	}
+
+	function checkIfFalse2(){
+		if (isTrue.indexOf(word.innerHTML) > -1 ) {
+			decrement1();
+			score1.value = "Score: " + score3;
+		} 
+	}
+
+	function checkIfTrue3(){
+		if (isTrue.indexOf(word.innerHTML) > -1 ) {
+			increment2();
+			score2.value = "Score: " + score4;
+		} 
+	}
+
+	function checkIfFalse3(){
+		if (isTrue.indexOf(word.innerHTML) === -1 ) {
+			decrement2();
+			score2.value = "Score: " + score4;
+		} 
+	}
+
+
+	function checkIfTrue4(){
+		if (isTrue.indexOf(word.innerHTML) === -1 ) {
+			increment2();
+			score2.value = "Score: " + score4;
+		} 
+	}
+
+	function checkIfFalse4(){
+		if (isTrue.indexOf(word.innerHTML) > -1 ) {
+			decrement2();
+			score2.value = "Score: " + score4;
+		} 
+	}
+	var f = document.querySelector("#holder1");
+	var g = document.querySelector("#holder2");
+	var z = document.querySelector(".Rules");
+	var y = document.querySelector("#playnow");
+	var v = document.querySelector("#choosename1");
+	var b = document.querySelector("#choosename2");
+	y.addEventListener("click", function(){
+			z.style.display = "none";
+		});
+	y.addEventListener("click", changeName1)
+	y.addEventListener("click", changeName2)	
+
+	function changeName1(){
+		var f = document.querySelector("#holder1");
+		var v = document.querySelector("#choosename1");
+		f.value = v.value;
+	}
+	function changeName2(){
+		var g = document.querySelector("#holder2");
+		var b = document.querySelector("#choosename2");		
+		g.value = b.value;
+	}
+
+	function checkScore(){
+		if (score3 >= 10) {
+			alert(f.value + " is the winner");
+			window.location.reload();
+		}else if(score4 >= 10){
+			alert(g.value + " is the winner");
+			window.location.reload();
+		}else if(score3 <= -5){
+			alert(g.value + " is the winner");
+			window.location.reload();
+		}else if(score4 <= -5){
+			alert(f.value + " is the winner");
+			window.location.reload();
+		}
+	}	
+
+	function enableBtns() {
+    	true1.disabled = false;
+    	false1.disabled = false;
+    	true2.disabled = false;
+    	false2.disabled = false;
+	}
+	function disableBtns() {
+   	    true1.disabled = true;
+    	false1.disabled =  true;
+    	true2.disabled =  true;
+    	false2.disabled =  true;
+	}
+
+function setEnableBtns(){
+	setTimeout(enableBtns, 500);
+}
+  
+</script>
+</body>
+</html>
